@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Juego de la Serpiente</title>
+    </head>
+    <body>
+        <canvas id="juegoserpiente" width="300" height="300"></canvas> <!-- Con esto le doy un identificador y creo el lienzo para el juego. -->
+    </body> 
+
+    <script>
+        
+        // Creo un área rectangular (lienzo) donde se dibujará el juego Snake.
+        const canvas = document.getElementById("juegoserpiente"); // Guarda una referencia al lienzo en la variable canvas y le digo que busque en el HTML el id especificado. 
+        const ctx = canvas.getContext("2d"); // Creo un objeto ctx (abreviatura de context) que permite dibujar en 2D. Sin esto no podría dibujar nada en el canvas.
+
+        // Funcion para limpiar el canvas
+        function limpiarCanvas(){
+        ctx.fillStyle = "white"; // Aquí defino el color de relleno ( en este caso blanco ).
+        ctx.strokeStyle = "black"; // Aquí defino el color del borde.
+        ctx.fillRect(0, 0, canvas.width, canvas.height); // Aquí le digo todo entre parentesis que dibuje un rectangulo relleno 0,0, que empiece por la esquinas superior izquierda. Canvas.widht height que ocupe todo el lienzo.
+        ctx.strokeRect(0,0, canvas.width, canvas.height); // Aquí dibuja el borde del rectangulo, mismas cordenadas que fillReact pero solo dibuja el contorno.
+        }
+
+        // 1.- Defino a la serpiente como un array de coordenadas
+        let serpiente = [
+            {x: 150, y: 150}, // Cabeza
+            {x: 140, y: 150}, // Siguiente segmento
+            {x: 130, y: 150}, // Siguiente segmento
+            {x: 120, y: 150}, // Siguiente segmento
+            {x: 110, y: 150}, // Esto es la cola
+        ];
+
+        // 2.- Función para dibujar el segmento de la serpiente
+        function dibujarSegmento(segmento) {  // Aquí defino el nombre de la función
+            ctx.fillStyle = "lightgreen"; // Color de relleno
+            ctx.strokeStyle = "darkgreen"; // Color del borde
+            ctx.fillRect(segmento.x, segmento.y, 10,10);  // Dibuja el relleno posicion x posicion y. Despues 10 pixeles de ancho y 10 de alto.
+            ctx.strokeRect(segmento.x, segmento.y, 10,10); // Dibuja el relleno posicion x posicion y. Despues 10 pixeles de ancho y 10 de alto.
+        }
+
+        // 3.- Función para dibujar toda la serpiente
+        function dibujarserpiente() {  // Le digo que cree una funcion que se llame dibujar serpiente
+            serpiente.forEach(dibujarSegmento); // Dibuja cada segmento
+        }
+
+        // 4.- Limpia el canvas y dibuja la serpiente
+        limpiarCanvas(); // Usa la función limpiar el canvas
+        dibujarserpiente();
+
+    </script>
+</html>
