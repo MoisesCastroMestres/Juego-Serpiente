@@ -12,7 +12,17 @@
         // Creo un área rectangular (lienzo) donde se dibujará el juego Snake.
         const canvas = document.getElementById("juegoserpiente"); // Guarda una referencia al lienzo en la variable canvas y le digo que busque en el HTML el id especificado. 
         const ctx = canvas.getContext("2d"); // Creo un objeto ctx (abreviatura de context) que permite dibujar en 2D. Sin esto no podría dibujar nada en el canvas.
+        
+        // Código de las teclas
+        const TECLA_IZQ = 37;  
+        const TECLA_DER = 39;
+        const TECLA_ARR = 38;
+        const TECLA_ABA = 40;
 
+        // Variables de direccion (Velocidad)
+        let dx = 10; // Desplamiento horizontal (10px  a la derecha)
+        let dy = 0; // Desplazamiento vertical (0px = no se mueve verticalmente)
+        
         // Funcion para limpiar el canvas
         function limpiarCanvas(){
         ctx.fillStyle = "white"; // Aquí defino el color de relleno ( en este caso blanco ).
@@ -43,13 +53,58 @@
             serpiente.forEach(dibujarSegmento); // Dibuja cada segmento
         }
 
-        // 4.- Limpia el canvas y dibuja la serpiente
-        limpiarCanvas(); // Usa la función limpiar el canvas
-        dibujarserpiente();
+ 
+        // Función mover serpiente 
 
-        // Variables de direccion (Velocidad)
-        let dx = 10; // Desplamiento horizontal (10px  a la derecha)
-        let dy = 0; // Desplazamiento vertical (0px = no se mueve verticalmente)
+        function moverserpiente() {
+            // Crea una cabeza en la nueva posicion
+            const cabeza = {
+                x: serpiente[0].x + dx,
+                y: serpiente[0].y + dy,
+            };
+
+            serpiente.unshift(cabeza); // Añade la nueva cabeza al inicio
+            serpiente.pop();           // Elimina el ultimo segmento (la cola)
+        }
+
+        function cambiarDireccion(evento) {
+            if (evento.keyCode === TECLA_IZQ) {
+                dx = -10; // Izquierda
+                dy = 0;
+            }
+
+            if (evento.keyCode === TECLA_DER) {
+                dx = 10; // Derecha
+                dy = 0;
+            }
+
+            if (evento.keyCode === TECLA_ARR) {
+                dx = 0;
+                dy = -10; // Arriba
+            }
+
+            if (evento.keyCode === TECLA_ABA) {
+                dx = 0;
+                dy = 10; // Abajo
+            }
+        }
+
+        // Escuchar las teclas
+
+        document.addEventListener("keydown", cambiarDireccion)
+
+        // Bucle principal del juego
+        function main() {
+            setTimeout(function() {
+                limpiarCanvas();    // Borra el canvas
+                moverserpiente();   // Actualiza la posicion
+                dibujarserpiente(); // Dibuja la serpiente en la nueva posición
+                main();             // Repite el bucle
+            }, 100);   // Espera 100ms (0.1 segundos)
+        }
+
+        // Inicia el juego
+        main();
 
     </script>
 </html>
