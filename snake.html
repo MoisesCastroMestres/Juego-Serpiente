@@ -43,7 +43,7 @@
         // Variable para la posición de la comida
         let comida = {
             x: Math.floor(Math.random() * 30) * 10,  // Posición aleatoria en el canvas
-            y: Math.floor(Math.random() * 30) * 10,
+            y: Math.floor(Math.random() * 30) * 10
         }
 
         // Dibujo la comida
@@ -76,11 +76,21 @@
             };
 
             //Detecta si ha chocado contra el borde
-            if (colisionconborde(cabeza) || colisionconcuerpo(cabeza)) {
-                alert("¡Game Over!");        // Muestra un mensaje
-                document.location.reload(); // Reinicia la página para empezar de nuevo
-                return;                     // Detiene el bucle
+            if (colisionconborde(cabeza)) {
+                findeljuego = true;
+                alert("¡Game Over! Chocaste contra la pared");  // Muestra un mensaje
+                return;                                         // Detiene el bucle
             }
+
+            //Detecta si ha chocado contra si mismo
+            if (colisionconcuerpo(cabeza)) {
+                findeljuego = true;
+                alert("¡Game Over! Chocaste contra ti mismo");  // Muestra un mensaje
+                document.location.reload();                     // Reinicia la página para empezar de nuevo
+                return;                                         // Detiene el bucle
+            }
+
+
 
             serpiente.unshift(cabeza); // Añade la nueva cabeza al inicio
         
@@ -139,6 +149,10 @@
         // Cuenta de cuantas veces ha comido la serpiente
         let puntos = 0;
 
+        let findeljuego = false;  // Detecta si el juego terminó
+        let mensajefin = "";
+
+
         // Mostrar la puntuación en pantalla
         function dibujarpuntuacion() {
             ctx.fillStyle = "black"; // Color del texto
@@ -146,8 +160,16 @@
             ctx.fillText("Puntos: " + puntos, 10, 20); // Dibuja el texto en la esquina superior izquierda 10, 20 son las coordendas
         }
 
+        // Mensaje de fin del juego
+        function mostrarmensajefin(texto) {
+            ctx.fillStyle = "black";    // Color del texto
+            ctx.font = "24px Arial";    // Fuente grande
+            ctx.textAlign = "center";   // Centrado Horizontalmente
+            ctx.fillText(texto, canvas.width / 2, canvas.height /2);  // Texto centrado
+        }
+
         // Escuchar las teclas
-        document.addEventListener("keydown", cambiarDireccion)
+        document.addEventListener("keydown", cambiarDireccion);
 
         // Bucle principal del juego
         function main() {
@@ -155,8 +177,14 @@
                 limpiarCanvas();    // Borra el canvas
                 dibujarpuntuacion();  // Mostrar los puntos
                 dibujarcomida();    // Dibuja la comida en pantalla
-                moverserpiente();   // Actualiza la posicion
                 dibujarserpiente(); // Dibuja la serpiente en la nueva posición
+
+                if (findeljuego) {
+                    mostrarmensajefin(mensajefin); // Muestra el mensaje de Game Over
+                    return; // Detiene el bucle
+                }
+
+                moverserpiente();   // Actualiza la posicion
                 main();             // Repite el bucle
             }, 100);   // Espera 100ms (0.1 segundos)
         }
