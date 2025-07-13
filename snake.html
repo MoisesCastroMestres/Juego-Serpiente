@@ -6,6 +6,7 @@
         <style>         
             body {   /* Posicion del tablero de juego en el centro de la pantalla */
                 margin: 0;
+                height: 100vh;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -13,14 +14,37 @@
                 background-color: #f0f0f0;
             }
 
+            #contenedor-juego {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #puntuacion {   /* Estilos para el texto de la puntuacion fuera del tablero */
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 20px;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                background-color: white;
+                padding: 5px 15px;
+                border: 2px solid black;
+                border-radius: 8px;
+            }
+
             canvas {
                 border: 2px solid black;
             }
         </style>
     </head>
-    <body>
-        <canvas id="juegoserpiente" width="400" height="400"></canvas> <!-- Con esto le doy un identificador y creo el lienzo para el juego. -->
-    </body> 
+        <body>
+            
+            <div id="contenedor-juego"> <!-- Con esto colocamos en la parte superior la puntuación -->
+                <div id="puntuacion">Puntos: 0 </div>  <!-- Lo metemos en el div para que el navegador lo trate un texto independiente-->
+                <canvas id="juegoserpiente" width="400" height="400"></canvas> <!-- Con esto le doy un identificador y creo el lienzo para el juego. -->
+            </div>
+
+        </body> 
+
 
     <script>
         
@@ -168,11 +192,15 @@
         let mensajefin = "";
 
 
-        // Mostrar la puntuación en pantalla
-        function dibujarpuntuacion() {
-            ctx.fillStyle = "black"; // Color del texto
-            ctx.font = "16px Arial"; // Fuente y tamaño
-            ctx.fillText("Puntos: " + puntos, 10, 20); // Dibuja el texto en la esquina superior izquierda 10, 20 son las coordendas
+        // // Mostrar la puntuación en pantalla
+        // function dibujarpuntuacion() {
+        //     ctx.fillStyle = "black"; // Color del texto
+        //     ctx.font = "16px Arial"; // Fuente y tamaño
+        //     ctx.fillText("Puntos: " + puntos, 10, 20); // Dibuja el texto en la esquina superior izquierda 10, 20 son las coordendas
+        // }
+
+        function actualizarpuntuacion() {
+            document.getElementById("puntuacion").textContent ="puntos: " + puntos;
         }
 
         // Mensaje de fin del juego
@@ -190,7 +218,7 @@
         function main() {
             setTimeout(function() {
                 limpiarCanvas();    // Borra el canvas
-                dibujarpuntuacion();  // Mostrar los puntos
+                actualizarpuntuacion();  // Mostrar los puntos
                 dibujarcomida();    // Dibuja la comida en pantalla
                 dibujarserpiente(); // Dibuja la serpiente en la nueva posición
 
