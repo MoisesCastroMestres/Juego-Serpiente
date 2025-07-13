@@ -31,7 +31,7 @@
         ctx.strokeRect(0,0, canvas.width, canvas.height); // Aquí dibuja el borde del rectangulo, mismas cordenadas que fillReact pero solo dibuja el contorno.
         }
 
-        // 1.- Defino a la serpiente como un array de coordenadas
+        // Defino a la serpiente como un array de coordenadas
         let serpiente = [
             {x: 150, y: 150}, // Cabeza
             {x: 140, y: 150}, // Siguiente segmento
@@ -40,7 +40,21 @@
             {x: 110, y: 150}, // Esto es la cola
         ];
 
-        // 2.- Función para dibujar el segmento de la serpiente
+        // Variable para la posición de la comida
+        let comida = {
+            x: Math.floor(Math.random() * 30) * 10,  // Posición aleatoria en el canvas
+            y: Math.floor(Math.random() * 30) * 10,
+        }
+
+        // Dibujo la comida
+        function dibujarcomida() {  // Función que se encarga de dibujar la comida
+            ctx.fillStyle = "red";  //  Indicamos que el color de relleno es el rojo
+            ctx.strokeStyle = "darkred";  // El borde sera rojo oscuro
+            ctx.fillRect(comida.x, comida.y, 10, 10); // Dibuja un cuadrado rojo solido de 10 pixeles las cordenadas
+            ctx.strokeRect(comida.x, comida.y, 10, 10); // Dibuja el contorno del cuadrado con las mismas cordenadas
+        }
+
+        // Función para dibujar el segmento de la serpiente
         function dibujarSegmento(segmento) {  // Aquí defino el nombre de la función
             ctx.fillStyle = "lightgreen"; // Color de relleno
             ctx.strokeStyle = "darkgreen"; // Color del borde
@@ -48,14 +62,12 @@
             ctx.strokeRect(segmento.x, segmento.y, 10,10); // Dibuja el relleno posicion x posicion y. Despues 10 pixeles de ancho y 10 de alto.
         }
 
-        // 3.- Función para dibujar toda la serpiente
+        // Función para dibujar toda la serpiente
         function dibujarserpiente() {  // Le digo que cree una funcion que se llame dibujar serpiente
             serpiente.forEach(dibujarSegmento); // Dibuja cada segmento
         }
 
- 
-        // Función mover serpiente 
-
+         // Función mover serpiente 
         function moverserpiente() {
             // Crea una cabeza en la nueva posicion
             const cabeza = {
@@ -64,7 +76,16 @@
             };
 
             serpiente.unshift(cabeza); // Añade la nueva cabeza al inicio
-            serpiente.pop();           // Elimina el ultimo segmento (la cola)
+        
+            // Detectar si la serpiente ha comido
+        if (cabeza.x === comida.x && cabeza.y === comida.y) {
+            comida = {
+                x: Math.floor(Math.random() * 30) * 10,
+                y: Math.floor(Math.random() * 30) * 10
+            };
+        } else {
+            serpiente.pop();            
+        }
         }
 
         function cambiarDireccion(evento) {
@@ -90,13 +111,13 @@
         }
 
         // Escuchar las teclas
-
         document.addEventListener("keydown", cambiarDireccion)
 
         // Bucle principal del juego
         function main() {
             setTimeout(function() {
                 limpiarCanvas();    // Borra el canvas
+                dibujarcomida();    // Dibuja la comida en pantalla
                 moverserpiente();   // Actualiza la posicion
                 dibujarserpiente(); // Dibuja la serpiente en la nueva posición
                 main();             // Repite el bucle
