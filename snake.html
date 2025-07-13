@@ -75,10 +75,18 @@
                 y: serpiente[0].y + dy,
             };
 
+            //Detecta si ha chocado contra el borde
+            if (colisionconborde(cabeza)) {
+                alert("¡Game Over!");        // Muestra un mensaje
+                document.location.reload(); // Reinicia la página para empezar de nuevo
+                return;                     // Detiene el bucle
+            }
+
             serpiente.unshift(cabeza); // Añade la nueva cabeza al inicio
         
             // Detectar si la serpiente ha comido
         if (cabeza.x === comida.x && cabeza.y === comida.y) {
+            puntos += 1;  //Aumenta los puntos a 1 cuando ha comido
             comida = {
                 x: Math.floor(Math.random() * 30) * 10,
                 y: Math.floor(Math.random() * 30) * 10
@@ -110,6 +118,25 @@
             }
         }
 
+        function colisionconborde(cabeza) {
+            return (
+                cabeza.x < 0 ||                 // Si se sale por la izquierda Si la posición X de la cabeza es menor que 0, significa que salió por la izquierda.
+                cabeza.x >= canvas.width ||     // Si se sale por la derecha  Si X es igual o mayor que el ancho total, salió por la derecha.
+                cabeza.y < 0 ||                 // Si se sale por arriba
+                cabeza.y >= canvas.height       // Si se sale por abajo
+            );
+        }
+
+        // Cuenta de cuantas veces ha comido la serpiente
+        let puntos = 0;
+
+        // Mostrar la puntuación en pantalla
+        function dibujarpuntuacion() {
+            ctx.fillStyle = "black"; // Color del texto
+            ctx.font = "16px Arial"; // Fuente y tamaño
+            ctx.fillText("Puntos: " + puntos, 10, 20); // Dibuja el texto en la esquina superior izquierda 10, 20 son las coordendas
+        }
+
         // Escuchar las teclas
         document.addEventListener("keydown", cambiarDireccion)
 
@@ -117,6 +144,7 @@
         function main() {
             setTimeout(function() {
                 limpiarCanvas();    // Borra el canvas
+                dibujarpuntuacion();  // Mostrar los puntos
                 dibujarcomida();    // Dibuja la comida en pantalla
                 moverserpiente();   // Actualiza la posicion
                 dibujarserpiente(); // Dibuja la serpiente en la nueva posición
