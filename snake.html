@@ -76,7 +76,7 @@
             };
 
             //Detecta si ha chocado contra el borde
-            if (colisionconborde(cabeza)) {
+            if (colisionconborde(cabeza) || colisionconcuerpo(cabeza)) {
                 alert("¡Game Over!");        // Muestra un mensaje
                 document.location.reload(); // Reinicia la página para empezar de nuevo
                 return;                     // Detiene el bucle
@@ -94,6 +94,15 @@
         } else {
             serpiente.pop();            
         }
+        }
+
+        function colisionconcuerpo(cabeza) { // Recorre cada segmento excepto la cabeza
+            for (let i = 1; i < serpiente.length; i++) {
+                if (cabeza.x === serpiente[i].x && cabeza.y === serpiente[i].y) {
+                    return true;   // Si la cabeza coincide con otro segmento, colision
+                }
+            }
+            return false; // Si no hay coincidencia, todo esta bien.
         }
 
         function cambiarDireccion(evento) {
