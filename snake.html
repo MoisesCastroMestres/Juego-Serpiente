@@ -2,9 +2,24 @@
 <html>
     <head>
         <title>Juego de la Serpiente</title>
+
+        <style>         
+            body {   /* Posicion del tablero de juego en el centro de la pantalla */
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                background-color: #f0f0f0;
+            }
+
+            canvas {
+                border: 2px solid black;
+            }
+        </style>
     </head>
     <body>
-        <canvas id="juegoserpiente" width="300" height="300"></canvas> <!-- Con esto le doy un identificador y creo el lienzo para el juego. -->
+        <canvas id="juegoserpiente" width="400" height="400"></canvas> <!-- Con esto le doy un identificador y creo el lienzo para el juego. -->
     </body> 
 
     <script>
